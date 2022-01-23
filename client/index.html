@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      [v-cloak] {
+        display:none;
+      }
+      </style>
+
+<title>Vue.js + Node.js</title>
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+  rel="stylesheet"
+  integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+  crossorigin="anonymous"
+/>
+
+  </head>
+  <body>
+    <!-- with id will cath this div and use with Vue -->
+    <!-- adding v-cloak,this attribute says,if this application is not ready,so dont need to show this block,and it uses css style -->
+    <div class="container pt-3 "  id="app" v-cloak>
+      <h1 class="text-center">Vue.js Reast-API</h1>
+<!-- to activate button,adding @submit to the form tag,and binding it to the Vue -->
+<!-- IMPORTANT!@submit reloads page,and to prevent it,addind @submit.prevent -->
+      <form class="row mb-3 col-12 d-flex" @submit.prevent="createContact">
+        <div class="input-group mb-3">
+          <!-- adding v-model to the input for username -->
+          <input
+          v-model="form.name"
+            type="text"
+            class="form-control"
+            placeholder="Username"
+            aria-label="Username"
+          />
+          <Label class="input-group-text"><-Name/Value-></Label>
+          <!-- adding v-model for Value ,bunding it to frontend.js Vue.data.form.value -->
+          <input
+          v-model="form.value"
+            type="text"
+            class="form-control"
+            placeholder="Value"
+            aria-label="Value"
+          />
+        </div>
+        <!-- using inversion for :disabled,that work only if both inputs are filled -->
+        <button class="btn btn-primary" type="submit" :disabled="!canCreate">Create</button>
+      </form>
+
+      <div v-if="loading">
+        <loader/>
+      </div>
+<!--use v-for,that will create this card div every time we add info from the form,
+that will be taken from the contacts array  -->
+<!-- !!!! after we added v-for,and going to the browser,empty card body will not be shown,only after we add info from the form by clicking the Create button
+, only then the card will appear-->
+<!-- so when nothing to show,we will add info in some element,that will tell us that no contacts,and  dissapear after we add card.
+ For this we add another div on this card,and use v-if that will check the length of the arrray,
+and if its not empty will show card block-->
+ <div v-else-if="contacts.length">
+            <div
+              v-for="contact in contacts"
+              class="card mb-3">
+                <div class="card-body">
+                  <!-- add contact.name -->
+                  <!-- add :style construction with dynamic style for  concrete element,
+                     in this case it checks if 'marked' ((that lives inside contact.marked)) is true ->will be red,else will be 'green'-->
+                    <h5 class="card-title" :style="{color: contact.marked ? 'red' : 'green'}">{{ contact.name }}</h5>
+                    <!-- and contact.value -->
+                    <p class="card-text">{{contact.value}}</p>
+                    <!-- now makin alive those buttons,by addind methods @click -->
+                    <!-- telling to the method mark_it() to use parameter CONTACT and his ID,to know exactly which contact we choose,
+                    same with Remove button -->
+                    <!-- to bind an element we use ":" -->
+                    <button class="btn btn-primary" @click="mark_it(contact.id)" :disabled="contact.marked">
+                      Mark it
+                    </button>
+                    <button class="btn btn-danger text-dark" @click="remove(contact.id)" >
+                      Remove
+                    </button>
+                </div>
+            </div>
+          </div>
+          <!-- and if  card block is empty((contacts.length=0->false)),this P will be shown instead -->
+          <p v-else class="text-danger text-center">Nothing to show yet</p>
+          <!-- but there is a bug,when we refresh the page,first shown card body for a milisecond and then dissapears,
+          to fix this,we add special attribute to our #app div,that calls V-CLOAK -->
+ </div>
+
+   
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    <script type="module" src="./frontend.js"></script>
+  </body>
+</html>

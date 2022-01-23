@@ -1,0 +1,23 @@
+{
+  "name": "vueapi",
+  "version": "1.0.0",
+  "description": "first vue api",
+  "main": "app.js",
+  "scripts": {
+    "dev": "nodemon app.js"
+  },
+  "keywords": [
+    "vue",
+    "js",
+    "api"
+  ],
+  "author": "anton",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.2",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
